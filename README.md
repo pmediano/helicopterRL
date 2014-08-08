@@ -30,6 +30,12 @@ Installation instructions
 4. Copy the `GPAgentMatlab` and randomAgentMatlab folders in the `helicopter/agents/` folder.
 5. Copy the `testTrainerJavaHelicopter` and `consoleTrainerJavaHelicopter` in the `helicopter/trainers` folder.
 6. Edit `settings_hc.m` file and set the correct agent, trainer, codec and PILCO paths.
-7. Open a Matlab instance in the `pilco_root/scenarios/helicopter` folder.
-8. Run `helicopter_learn_loop.m`. Admire your helicopter learning.
+
+
+Usage
+-----
+
+You can play with the parameters of the algorithm and the learning task in `settings_hc.m` and `helicopter_learn_loop.m`. See comments inside the code for more information.
+
+For a quick start, open a Matlab instance in `pilco_root_scenarios/helicopter/` and run `helicopter_learn_loop.m`.
 

@@ -1,0 +1,17 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Main function}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{helicopter\137learn\137loop.m}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{settings\137hc.m}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Agents}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{random\137agent\137matlab.m}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{helicopter\137agent.m}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Model evaluation functions}{}% 8
+\BOOKMARK [2][-]{subsection.4.1}{checkModel.m}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.2}{drawNLPDplots.m}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.3}{evaluateHistory.m}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.4}{NLPD.m}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Helper functions}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{getHistoryFilename.m}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{loss\137dp.m}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.3}{trainHelicopterModel.m}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.4}{trainRewardModel.m}{section.5}% 17

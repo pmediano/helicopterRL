@@ -1,0 +1,49 @@
+\documentclass[a4paper,11pt]{article}
+
+\input{header.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This is the documentation for the \textbf{helicopterRL} project. More information in
+
+{\centering
+\url{https://github.com/pmediano/helicopterRL}
+
+\url{http://wp.doc.ic.ac.uk/sml/student-projects/}
+
+}
+
+\section{Main function}
+
+\input{latexFolder/helicopter_learn_loop.tex}
+\input{latexFolder/settings_hc.tex}
+
+\section{Agents}
+
+\input{latexFolder/random_agent_matlab.tex}
+\input{latexFolder/helicopter_agent.tex}
+
+
+\section{Model evaluation functions}
+
+\input{latexFolder/checkModel.tex}
+\input{latexFolder/drawNLPDplots.tex}
+\input{latexFolder/evaluateHistory.tex}
+\input{latexFolder/NLPD.tex}
+
+
+\section{Helper functions}
+
+\input{latexFolder/getHistoryFilename.tex}
+\input{latexFolder/loss_hc.tex}
+\input{latexFolder/Rbased_loss_hc.tex}
+\input{latexFolder/trainHelicopterModel.tex}
+\input{latexFolder/trainRewardModel.tex}
+
+
+
+\end{document}
