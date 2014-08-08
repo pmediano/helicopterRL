@@ -13,7 +13,7 @@ clear all; close all;
 settings_hc;                  	% Load scenario-specific settings
 
 use_reward_model = false;
-use_previous_history = true;
+use_previous_history = false;
 
 % Modify the trainer source files and compile for the desired MDP
 whichMDP = 0;
