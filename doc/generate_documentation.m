@@ -58,8 +58,7 @@ end
 
 isLatex = cellfun(@(s) strcmp(s, 'latex'), docFormats);
 if any(isLatex)
-  fprintf('\r Generating full LaTeX documentation.');
-  !pdftex -synctex=1 -interaction=nonstopmode doc.tex
+  fprintf('\r If you want to generate full LaTeX documentation, remember to get doc.tex in your LaTeX environment and compile it.');
 end
 
 fprintf('\r Done\n');
