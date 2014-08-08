@@ -27,8 +27,8 @@ Installation instructions
 2. a) Download the Helicopter environment from the 2014 RL Competition website (https://sites.google.com/site/rlcompetition2014/domains/helicopter).  
   b) Or Download it from the RL-Library website (<a href="library.rl-community.org/wiki/Helicopter_(Java)">library.rl-community.org/wiki/Helicopter_(Java)</a>).  
 3. Copy the `helicopter` folder in the `pilco_root/scenarios/` folder.
-4. Copy the `GPAgentMatlab` and randomAgentMatlab folders in the `helicopter/agents/` folder.
-5. Copy the `testTrainerJavaHelicopter` and `consoleTrainerJavaHelicopter` in the `helicopter/trainers` folder.
+4. Copy the `GPAgentMatlab` and randomAgentMatlab folders in the `pilco_root/scenarios/helicopter/agents/` folder.
+5. Copy the `testTrainerJavaHelicopter` and `consoleTrainerJavaHelicopter` in the `pilco_root/scenarios/helicopter/trainers` folder.
 6. Edit `settings_hc.m` file and set the correct agent, trainer, codec and PILCO paths.
 
 
@@ -37,5 +37,5 @@ Usage
 
 You can play with the parameters of the algorithm and the learning task in `settings_hc.m` and `helicopter_learn_loop.m`. See comments inside the code for more information.
 
-For a quick start, open a Matlab instance in `pilco_root_scenarios/helicopter/` and run `helicopter_learn_loop.m`.
+For a quick start, open a Matlab instance in `pilco_root/scenarios/helicopter/` and run `helicopter_learn_loop.m`.
 
