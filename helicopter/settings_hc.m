@@ -1,5 +1,5 @@
 %% settings_hc.m
-% *Summary:* Script set up the helicopter scenario
+% *Summary:* Script to set up the helicopter scenario
 %
 
 %% High-Level Steps
@@ -18,7 +18,7 @@
 
 warning('on','all'); format short; format compact
 
-% include some paths
+% Include some paths
 try
   rd = '../../';
   addpath([rd 'base'],[rd 'util'],[rd 'gp'],[rd 'control'],[rd 'loss']);
@@ -80,12 +80,13 @@ difi = observationIdx;        % indicies for training targets that are differenc
 
 % 2. Set up the scenario
 mu0 = zeros([nVar 1]);               % initial state mean (column vector)
-S0 = diag(zeros([1 nVar]));          % initial state covariance
+% S0 = diag(zeros([1 nVar]));          % initial state covariance
+S0 = 0.0001*eye(nVar);
 mu0Sim(odei,:) = mu0; S0Sim(odei,odei) = S0;        % Specify initial state distribution - 
 mu0Sim = mu0Sim(dyno); S0Sim = S0Sim(dyno,dyno);    % in this case, the origin.
 
-n_init = 150;                     % no. of initial data points (computed with random policy)
-max_last_size = 150;							% max no. of data points added to the dataset in each iteration
+n_init = 100;                     % no. of initial data points (computed with random policy)
+max_last_size = 100;              % max no. of data points added to the dataset in each iteration
 N = 20;                           % max no. of controller optimizations
 
 % 3. Set up the plant structure
@@ -116,25 +117,25 @@ policy.p.b = zeros(length(policy.maxU),1);                  % bias
 
                                                             
 % Uncomment the following lines if policy is @congp
-%nc = 100;  			                       % size of controller training set
-%policy.p.inputs = gaussian(mm(poli), ss(poli,poli), nc)'; % init. location of 
-                                                          % basis functions
-%policy.p.targets = 0.1*randn(nc, length(policy.maxU));    % init. policy targets 
-                                                          % (close to zero)
-%policy.p.hyp = ...                                        % initialize policy
+% nc = 100;  			                       % size of controller training set
+% policy.p.inputs = gaussian(mm(poli), ss(poli,poli), nc)'; % init. location of 
+%                                                           % basis functions
+% policy.p.targets = 0.1*randn(nc, length(policy.maxU));    % init. policy targets 
+%                                                           % (close to zero)
+% policy.p.hyp = ...                                        % initialize policy
 %  repmat(log([1 1 1 1 1 1 1 1 1 1 1 1 1 0.01]'), 1, 4);   % hyper-parameters
 
 
 % 5. Set up the cost structure
 cost.fcn = @loss_hc;                        % cost function
 cost.gamma = 1;                             % discount factor
-cost.width = 0.8;                           % cost function width
+cost.width = 1;                           % cost function width
 cost.expl = 0;                              % exploration parameter (UCB)
 cost.angle = plant.angi;                    % index of angle (for cost function)
 cost.target = zeros(nVar, 1);                   % target state
 
 % Alternatively, define a function to translate RL-Glue rewards to cost
-reward2loss = @(r) 1-exp(r/10);
+reward2loss = @(r) -exp(r/5);
 
 
 % 6. Set up the GP dynamics model structure
@@ -162,4 +163,4 @@ plotting.verbosity = 3;            % 0: no plots
 % 9. Some initializations
 fantasy.mean = cell(1,N); fantasy.std = cell(1,N);
 realCost = cell(1,N); M = cell(N,1); Sigma = cell(N,1);
-
+newdata = [];

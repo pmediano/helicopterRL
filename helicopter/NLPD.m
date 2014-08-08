@@ -6,13 +6,14 @@
 %    x			observation
 %    mu			mean vector of the distribution
 %    sigma		covariance matrix of the distribution
-%    d			dimensionality of  
+%    d			(optional) dimensionality of input space
 %
 % *Output arguments:*
 %    lp			computed NLPD
 
-function [ lp ] = NLPD(x, mu, sigma, d)
 %% Code
+
+function [ lp ] = NLPD(x, mu, sigma, d)
 
     if nargout==3; d = numel(x); end;
 

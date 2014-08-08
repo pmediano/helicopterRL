@@ -1,5 +1,8 @@
 %% getHistoryFilename.m
-% *Summary:* Script to find a name for the history file to be used. If user set use_previous_history=true, the name of the latest existing history file is returned. If use_previous_history=false, return a name for a new file. 
+% *Summary:* Script to find a name for the history file to be used.
+% If user set |use_previous_history=true|, the name of the latest existing
+% history file is returned. If |use_previous_history=false|, return a name
+% for a new file. 
 %
 
 %% Code

@@ -28,6 +28,7 @@ while highSNR
     reward_dynmodel = reward_dynmodel.train(reward_dynmodel);  %  train dynamics GP
     r_hyp = reward_dynmodel.hyp;
     highSNR = exp(r_hyp(end-1)-r_hyp(end)) > 500;
+    disp(['Reward model SNR = ' num2str(exp(r_hyp(end-1)-r_hyp(end)))]);
 end
 
 % 3. Check length-scales

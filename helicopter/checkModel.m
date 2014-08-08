@@ -1,11 +1,14 @@
 %% checkModel.m
-% *Summary:* Compute goodness-of-fit measures to assess the predictive power of the model. If no test dataset is provided, measure on train dataset.
+% *Summary:* Compute goodness-of-fit measures to assess the predictive
+% power of the model. If no test dataset is provided, measure on train dataset.
 %
 % *Input arguments:*
 %
 %   model           model to be assessed
-%   test_x          test inputs to try model on
-%   test_y          test outputs to try model on
+%   test_x          (optional) test inputs to try model on
+%   test_y          (optional) test outputs to try model on
+
+%% Code
 
 function checkModel( model, test_x, test_y )
     

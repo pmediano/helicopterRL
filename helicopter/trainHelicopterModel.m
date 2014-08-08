@@ -26,6 +26,7 @@ for k=1:nVar
     auxDynmodel.induce = dynmodel.induce;
     auxDynmodel.inputs = dynmodel.inputs;
     auxDynmodel.targets = dynmodel.targets(:,observationIdx(k));
+    auxDynmodel.hyp = dynmodel.hyp(:,k);
     
     auxDynmodel = auxDynmodel.train(auxDynmodel, plant, trainOpt);
     

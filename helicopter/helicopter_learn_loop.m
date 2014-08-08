@@ -13,10 +13,10 @@ clear all; close all;
 settings_hc;                  	% Load scenario-specific settings
 
 use_reward_model = false;
-use_previous_history = false;
+use_previous_history = true;
 
 % Modify the trainer source files and compile for the desired MDP
-whichMDP = 7;
+whichMDP = 0;
 setenv('tMDP', num2str(whichMDP));
 cd([trainerDir 'consoleTrainerJavaHelicopter']);
 !sed "s/whichTrainingMDP = [0-9]/whichTrainingMDP = ${tMDP}/" <src/consoleTrainerBackup >src/consoleTrainer.java
@@ -41,7 +41,7 @@ if ~use_previous_history
 
     load([agentDir 'randomAgentMatlab/randomDataMDP' num2str(whichMDP) '.mat']);
     
-    delta_n = min(n_init, size(random_data.x, 2));
+    delta_n = min(n_init, size(random_data.x, 1));
     x = random_data.x(1:delta_n,:);
     y = random_data.y(1:delta_n,:);
     r_x = random_data.r_x(1:delta_n,:);
@@ -68,14 +68,20 @@ else
 end
 
 
-% Start learning loop. Finish when the helicopter makes a successful run (6000 steps)
+% Start learning loop. Feel free to Ctrl-C at any time, history file is
+% saved automatically and you can resume later using
+% |use_previous_history = true;|
 cd([pilcoDir 'scenarios/helicopter']);
 j = 1;
-while ~exist('last_size', 'var') || last_size < 5990
+while true
     
     % 3. Train GP's and specify cost function
-    
-    % 3.1. Train GP model to predict reward to use as cost function, or
+
+    % 3.1. Train GP for the helicopter dynamics
+    trainHelicopterModel
+    if exist('history', 'var'); history{end+1}.dynmodel = dynmodel; else history{1}.dynmodel = dynmodel; end
+ 
+    % 3.2. Train GP model to predict reward to use as cost function, or
     % set parameters of user-defined cost function
     if use_reward_model
         trainRewardModel;
@@ -86,11 +92,7 @@ while ~exist('last_size', 'var') || last_size < 5990
         cost.width = 1;
         cost.fcn = @loss_hc;
     end
-
-    % 3.2. Train GP for the helicopter dynamics
-    trainHelicopterModel
-    if exist('history', 'var'); history{end+1}.dynmodel = dynmodel; else history{1}.dynmodel = dynmodel; end
-    
+   
     % 4. Learn policy and save structure
     H = H + 5;
     learnPolicy;
@@ -99,27 +101,40 @@ while ~exist('last_size', 'var') || last_size < 5990
     history{end}.policy = policy;
     history{end}.H = H;
     
-    % 5. Run the simulator with the latest policy until trajectory is longer than lower limit
+    % 5. Run the simulator with the latest policy until trajectory is
+    % longer than lower limit. If it isn't aggregate more datasets.
     last_size = 0;
     min_last_size = H;
-    while last_size < min_last_size
+    run_counter = 0;
+    while last_size < min_last_size && run_counter < 10
     	cd([trainerDir 'consoleTrainerJavaHelicopter']);
     	!bash run.bash &
     	cd([pilcoDir 'scenarios/helicopter']);
     	theAgent = helicopter_agent(policy, codecDir, pilcoDir);
     	runAgent(theAgent);
  
-   	newdata = load('GPHistory.mat');
-    	newdata = newdata.helicopter_agent_struct;
+        aux_newdata = load('GPHistory.mat');
+    	newdata = [newdata; newdata.helicopter_agent_struct];
     	last_size = size(newdata,1) - 1;
+        
+        run_counter = run_counter + 1;
     end
 
-    % 6. Get new data from the last trajectory
-    delta_n = min(last_size, max_last_size) + 1;
-    x = [x; newdata(1:delta_n-1,1:16)];
-    y = [y; newdata(2:delta_n,1:12)];
-    r_x = [r_x; newdata(2:delta_n,1:12)];
-    r_y = [r_y; newdata(2:delta_n, 17)];
+    % 6. Get new data from the last trajectory. If the last trajectory
+    % was long enough, select data 
+    if last_size < 5990
+        delta_n = min(last_size, max_last_size) + 1;
+        x = [x; newdata(1:delta_n-1,1:16)];
+        y = [y; newdata(2:delta_n,1:12)];
+        r_x = [r_x; newdata(2:delta_n,1:12)];
+        r_y = [r_y; newdata(2:delta_n, 17)];
+    else
+        [dynIdx, rewardIdx] = selectData(history{end}, max_last_size);
+        x = [x; history{end}.trajectory(dynIdx, 1:16)];
+        y = [y; history{end}.trajectory(dynIdx+1, 1:12)];
+        r_x = [r_x; history{end}.trajectory(rewardIdx, 1:12)];
+        r_y = [r_y; history{end}.trajectory(rewardIdx, 17)];
+    end
 
     
     history{end}.steps = last_size;
@@ -134,7 +149,7 @@ while ~exist('last_size', 'var') || last_size < 5990
     disp(['Length of the last trajectory is ' num2str(last_size)]);
     
     % 7. Plot NLPD of model when following the trajectory
-		drawNLDPplots;
+    drawNLPDplots;
 		    
     j = j + 1;
     
